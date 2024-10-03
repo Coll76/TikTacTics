@@ -40,13 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Required by allauth
 
     #3rd-party apps
-    'allauth',#new
-    'allauth.account', #new
-    'allauth.socialaccount',#new
-    'dj_rest_auth',#new
+    #'allauth',#new
+    #'allauth.account', #new
+    #'allauth.socialaccount',#new
+    #dj_rest_auth',#new
     'rest_framework',
     'rest_framework.authtoken',
-    'dj_rest_auth.registration', #new
+    #'dj_rest_auth.registration', #new
+    'celery',
 
     #local
     'PhishingSolution',
@@ -63,6 +64,17 @@ REST_FRAMEWORK = {
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication', # new
             ],
+
+        'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ],
 }
 
 
@@ -74,7 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware', #new
+    #'allauth.account.middleware.AccountMiddleware', #new
 ]
 
 ROOT_URLCONF = 'Tiktaktiks.urls'
@@ -147,16 +159,33 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'PhishingSolution.User'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
+#AUTH_USER_MODEL = 'PhishingSolution.User'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
 SITE_ID = 1 # new
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
+#ACCOUNT_EMAIL_REQUIRED = True
+#ACCOUNT_USERNAME_REQUIRED = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTHENTICATION_BACKENDS = [
+"""AUTHENTICATION_BACKENDS = [
 
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
-]
+]"""
+
+
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'amqp://localhost'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+
+
+
+# Google OAuth settings
+
+GOOGLE_CLIENT_ID = '344719165870-kb3l6s01e3s7c3v4rfllpamffa05jf8p.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_REDIRECT_URI = 'http://127.0.0.1:8000/api/v1/oauth-redirect/'
+GOOGLE_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
