@@ -1,23 +1,19 @@
 from rest_framework import serializers
-from .models import User, PhishingLink, PhishingData
+from .models import EmailMessage
 
-class UserSerializer(serializers.ModelSerializer):
-    """Serializer for the User model."""
-    
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'is_active')  # Add any additional fields you want to expose
+class OAuthSerializer(serializers.Serializer):
+    access_token = serializers.CharField(max_length=255)
+    token_type = serializers.CharField(max_length=255)
+    expires_in = serializers.IntegerField()
+    refresh_token = serializers.CharField(max_length=255)
 
-class PhishingLinkSerializer(serializers.ModelSerializer):
-    """Serializer for the PhishingLink model."""
-    
+class EmailMessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PhishingLink
-        fields = ('id', 'url', 'created_at')
+        model = EmailMessage
+        fields = ['id', 'subject', 'body', 'sender', 'recipient', 'created_at']
 
-class PhishingDataSerializer(serializers.ModelSerializer):
-    """Serializer for the PhishingData model."""
-    
-    class Meta:
-        model = PhishingData
-        fields = ('id', 'link', 'phishing', 'created_at')
+class OAuthAuthorizeSerializer(serializers.Serializer):
+    auth_url = serializers.URLField()
+
+class OAuthRedirectSerializer(serializers.Serializer):
+    access_token = serializers.CharField(max_length=255)
