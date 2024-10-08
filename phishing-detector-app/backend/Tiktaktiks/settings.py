@@ -25,7 +25,11 @@ SECRET_KEY = '#f2bd=s-ad)*ec!!1iqbu-zz39rtgi27ig=ynh)tb17zp%*k-v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        'localhost',            # Local development
+        '127.0.0.1',           # Local development
+        'fca4-216-128-0-64.ngrok-free.app', #Ngrok URL
+        ]
 
 
 # Application definition
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     #'allauth.account', #new
     #'allauth.socialaccount',#new
     #dj_rest_auth',#new
+    #'rest_framework_swagger', # new
     'rest_framework',
     'rest_framework.authtoken',
     #'dj_rest_auth.registration', #new
@@ -57,7 +62,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.IsAuthenticated', #new
+            'rest_framework.permissions.AllowAny', #new
             ],
 
         'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -75,6 +80,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',
     ],
+
+    #'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
 }
 
 
@@ -189,3 +196,24 @@ GOOGLE_CLIENT_ID = '344719165870-kb3l6s01e3s7c3v4rfllpamffa05jf8p.apps.googleuse
 GOOGLE_CLIENT_SECRET = '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'
 GOOGLE_REDIRECT_URI = 'http://127.0.0.1:8000/api/v1/oauth-redirect/'
 GOOGLE_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
+
+
+
+# Swagger API Configuration
+"""
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    },
+    'USE_SESSION_AUTH': False,  # If you want to disable session authentication in Swagger UI
+    'JSON_EDITOR': True,  # To enable the JSON editor in Swagger UI
+}
+
+REDOC_SETTINGS = {
+    'LAZY_RENDERING': True,  # Enables lazy rendering for faster load times
+}
+"""
