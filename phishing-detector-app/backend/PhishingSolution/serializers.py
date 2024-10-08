@@ -1,19 +1,10 @@
+# serializers.py
+
 from rest_framework import serializers
-from .models import EmailMessage
+from .models import SpamEmail
 
-class OAuthSerializer(serializers.Serializer):
-    access_token = serializers.CharField(max_length=255)
-    token_type = serializers.CharField(max_length=255)
-    expires_in = serializers.IntegerField()
-    refresh_token = serializers.CharField(max_length=255)
-
-class EmailMessageSerializer(serializers.ModelSerializer):
+class SpamEmailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmailMessage
-        fields = ['id', 'subject', 'body', 'sender', 'recipient', 'created_at']
-
-class OAuthAuthorizeSerializer(serializers.Serializer):
-    auth_url = serializers.URLField()
-
-class OAuthRedirectSerializer(serializers.Serializer):
-    access_token = serializers.CharField(max_length=255)
+        model = SpamEmail
+        fields = ['id', 'message_id', 'sender', 'subject', 'body', 'detected_on']
+        read_only_fields = ['id', 'detected_on']  # detected_on is read-only since it's auto-added
