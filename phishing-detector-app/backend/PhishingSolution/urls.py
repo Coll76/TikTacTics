@@ -1,9 +1,6 @@
 from django.urls import path
-
-from .views import OAuthAuthorizeView, OAuthRedirectView
-from rest_framework.authtoken.views import ObtainAuthToken
+from .views import SpamDetectionAPIView
 
 urlpatterns = [
-    path('oauth-redirect/', OAuthRedirectView.as_view(), name='connect_email'),
-    path('oauth-authorize/', OAuthAuthorizeView.as_view(), name='oauth-authorize'), #new
+    path('start-detection/', SpamDetectionAPIView.as_view(), name='start-detection'),
 ]
