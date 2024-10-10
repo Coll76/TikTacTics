@@ -6,6 +6,8 @@ from .models import SpamEmail, CustomUser
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from dj_rest_auth.serializers import LoginSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
 
 User = get_user_model()
 
@@ -42,24 +44,37 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 # Custom serializer for user login
-class CustomLoginSerializer(LoginSerializer):
-    username = None  # Remove the username field
-    email = serializers.EmailField(required=True, allow_blank=False)  # Use email instead
+class CustomLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
 
-    def get_auth_user(self, email, password):
-        # Override the default method to use email for authentication
-        user = self.context['request'].user
-        if user and user.is_authenticated:
-            return user
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
 
-        try:
-            # Perform authentication using email instead of username
-            user = CustomUser.objects.get(email=email)
-        except CustomUser.DoesNotExist:
-            raise serializers.ValidationError(_("Invalid email/password."))
+        user = authenticate(email=email, password=password)
+        if user is None:
+            raise serializers.ValidationError("Invalid credentials")
 
-        if user and user.check_password(password):
-            return user
+        refresh = RefreshToken.for_user(user)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
 
-        raise serializers.ValidationError(_("Invalid email/password."))
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetSerializer(serializers.Serializer):
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError("Passwords do not match.")
+        return attrs
+
+    def save(self, user):
+        user.set_password(self.validated_data['password1'])
+        user.save()
