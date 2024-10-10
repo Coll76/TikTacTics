@@ -58,7 +58,8 @@ INSTALLED_APPS = [
 
     #local
     'PhishingSolution',
-    'debug_toolbar',
+    'debug_toolbar', #new
+    'rest_framework_simplejwt.token_blacklist', #new
 ]
 
 
@@ -82,7 +83,7 @@ CHANNEL_LAYERS = {
 
 REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.AllowAny', #new
+            'rest_framework.permissions.IsAuthenticated', #new
             ],
 
         'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -112,6 +113,8 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
