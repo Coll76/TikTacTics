@@ -44,19 +44,39 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Required by allauth
 
     #3rd-party apps
-    #'allauth',#new
-    #'allauth.account', #new
-    #'allauth.socialaccount',#new
-    #dj_rest_auth',#new
+    'allauth',#new
+    'allauth.account', #new
+    'allauth.socialaccount',#new
+    'dj_rest_auth',#new
     #'rest_framework_swagger', # new
     'rest_framework',
     'rest_framework.authtoken',
-    #'dj_rest_auth.registration', #new
+    'dj_rest_auth.registration', #new
     'celery',
+    'channels',
+    'rest_framework_simplejwt', #new
 
     #local
     'PhishingSolution',
+    'debug_toolbar',
 ]
+
+
+#new
+# Define the ASGI application for Channels
+ASGI_APPLICATION = 'Tiktaktiks.asgi.application'
+
+
+
+#new
+# Set up Redis as the channel layer backend for handling WebSockets
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer', #NEW
+    },
+}
+
+
 
 #new
 
@@ -66,8 +86,9 @@ REST_FRAMEWORK = {
             ],
 
         'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework.authentication.SessionAuthentication',
-            'rest_framework.authentication.TokenAuthentication', # new
+            #'rest_framework.authentication.SessionAuthentication',
+            #'rest_framework.authentication.TokenAuthentication',
+            'rest_framework_simplejwt.authentication.JWTAuthentication', #new
             ],
 
         'DEFAULT_RENDERER_CLASSES': [
@@ -84,6 +105,27 @@ REST_FRAMEWORK = {
     #'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
 }
 
+#new
+# JWT settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+#new
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'PhishingSolution.serializers.UserRegistrationSerializer',
+    }
+
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'PhishingSolution.serializers.CustomLoginSerializer',
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,7 +135,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'allauth.account.middleware.AccountMiddleware', #new
+    'allauth.account.middleware.AccountMiddleware', #new
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Tiktaktiks.urls'
@@ -122,10 +165,19 @@ WSGI_APPLICATION = 'Tiktaktiks.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tiktactics',
+        'USER': 'tiktacticuser',
+        'PASSWORD': '!@#$%123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 
 
 # Password validation
@@ -166,19 +218,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#AUTH_USER_MODEL = 'PhishingSolution.User'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
 SITE_ID = 1 # new
-#ACCOUNT_EMAIL_REQUIRED = True
-#ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tiktacticsapp@gmail.com'
+EMAIL_HOST_PASSWORD = '#@*titac'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-
-"""AUTHENTICATION_BACKENDS = [
-
+AUTHENTICATION_BACKENDS = [
+    'PhishingSolution.backends.EmailBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
-]"""
+]
 
 
 CELERY_BROKER_URL = 'amqp://localhost'
@@ -217,3 +274,5 @@ REDOC_SETTINGS = {
     'LAZY_RENDERING': True,  # Enables lazy rendering for faster load times
 }
 """
+
+AUTH_USER_MODEL = 'PhishingSolution.CustomUser'
