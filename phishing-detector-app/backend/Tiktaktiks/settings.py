@@ -176,7 +176,7 @@ DATABASES = {
         'NAME': 'tiktactic',
         'USER': 'tiktactic_user',
         'PASSWORD': 'fyxaLPTrYkKGYxatwVjwKHYfD8fPTGuA',
-        'HOST': 'dpg-cs56bb5umphs73aoihtg-a',
+        'HOST': 'dpg-cs56bb5umphs73aoihtg-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
