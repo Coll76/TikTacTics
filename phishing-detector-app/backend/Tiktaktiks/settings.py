@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
         'localhost',            # Local development
         '127.0.0.1',           # Local development
         'fca4-216-128-0-64.ngrok-free.app', #Ngrok URL
-        'tiktactics.onrender.com'
+        'tiktactics.onrender.com',
         ]
 
 
@@ -239,7 +239,7 @@ EMAIL_HOST_PASSWORD = '#@*titac'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 AUTHENTICATION_BACKENDS = [
-    'PhishingSolution.backends.EmailBackend',
+    #'PhishingSolution.backends.EmailBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
