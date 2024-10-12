@@ -226,8 +226,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 #Email settings
 
-from decouple import Config
-config = Config()
+from decouple import config
+config = config()
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
 SITE_ID = 1 # new
