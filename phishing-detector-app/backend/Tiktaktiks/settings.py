@@ -23,13 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#f2bd=s-ad)*ec!!1iqbu-zz39rtgi27ig=ynh)tb17zp%*k-v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
         'localhost',            # Local development
         '127.0.0.1',           # Local development
         'fca4-216-128-0-64.ngrok-free.app', #Ngrok URL
-        'tiktactics.onrender.com',
+        'tiktactics.onrender.com' #new
         ]
 
 
