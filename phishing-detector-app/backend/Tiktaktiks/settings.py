@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'corsheaders',
+    'corsheaders', #new
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -141,6 +141,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware', #new
+    'django.middleware.common.CommonMiddleware', #new
     'allauth.account.middleware.AccountMiddleware', #new
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
