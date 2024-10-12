@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#f2bd=s-ad)*ec!!1iqbu-zz39rtgi27ig=ynh)tb17zp%*k-v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
         'localhost',            # Local development
@@ -224,19 +224,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+#Email settings
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
+from decouple import config
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
 SITE_ID = 1 # new
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tiktacticsapp@gmail.com'
-EMAIL_HOST_PASSWORD = '#@*titac'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+EMAIL_HOST_PASSWORD = '#@*tictac'
+#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 AUTHENTICATION_BACKENDS = [
     #'PhishingSolution.backends.EmailBackend',
