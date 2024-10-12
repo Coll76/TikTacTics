@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
         'localhost',            # Local development
         '127.0.0.1',           # Local development
         'fca4-216-128-0-64.ngrok-free.app', #Ngrok URL
+        'tiktactics.onrender.com'
         ]
 
 
