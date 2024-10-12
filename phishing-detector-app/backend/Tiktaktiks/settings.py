@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#f2bd=s-ad)*ec!!1iqbu-zz39rtgi27ig=ynh)tb17zp%*k-v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
         'localhost',            # Local development
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'corsheaders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -139,6 +140,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #new
     'allauth.account.middleware.AccountMiddleware', #new
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
@@ -170,10 +172,10 @@ WSGI_APPLICATION = 'Tiktaktiks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tiktactics',
-        'USER': 'tiktacticuser',
-        'PASSWORD': '!@#$%123',
-        'HOST': 'localhost',
+        'NAME': 'tiktactic',
+        'USER': 'tiktactic_user',
+        'PASSWORD': 'fyxaLPTrYkKGYxatwVjwKHYfD8fPTGuA',
+        'HOST': 'dpg-cs56bb5umphs73aoihtg-a',
         'PORT': '5432',
     }
 }
@@ -280,3 +282,11 @@ REDOC_SETTINGS = {
 """
 
 AUTH_USER_MODEL = 'PhishingSolution.CustomUser'
+
+
+#new
+
+CORS_ALLOWED_ORIGINS = [
+    "https://your-mobile-app-domain.com",
+    "http://localhost:3000",  # or any other origin
+    ]
